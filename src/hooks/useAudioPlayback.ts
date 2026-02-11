@@ -14,7 +14,10 @@ export const useAudioPlayback = ({
     const audioServiceRef = useRef(new BinauralAudioService());
     const [isPlaying, setIsPlaying] = useState(false);
     const [playStartedAt, setPlayStartedAt] = useState<number | null>(null);
-    const [isExporting, setIsExporting] = useState(false);
+    const [exportKind, setExportKind] = useState<"none" | "wav" | "mp3">("none");
+    const isExporting = exportKind !== "none";
+    const isExportingWav = exportKind === "wav";
+    const isExportingMp3 = exportKind === "mp3";
 
     useEffect(() => {
         if (!isPlaying) {
@@ -47,7 +50,10 @@ export const useAudioPlayback = ({
     }, []);
 
     const downloadWav = useCallback(async () => {
-        setIsExporting(true);
+        if (isExporting) {
+            return;
+        }
+        setExportKind("wav");
 
         try {
             const blob = await audioServiceRef.current.exportWav(exportSettings);
@@ -66,12 +72,15 @@ export const useAudioPlayback = ({
         } catch (error) {
             window.alert("Votre navigateur ne supporte pas OfflineAudioContext.");
         } finally {
-            setIsExporting(false);
+            setExportKind("none");
         }
-    }, [exportSettings]);
+    }, [exportSettings, isExporting]);
 
     const downloadMp3 = useCallback(async () => {
-        setIsExporting(true);
+        if (isExporting) {
+            return;
+        }
+        setExportKind("mp3");
 
         try {
             const blob = await audioServiceRef.current.exportMp3(exportSettings);
@@ -88,16 +97,21 @@ export const useAudioPlayback = ({
             link.click();
             URL.revokeObjectURL(downloadUrl);
         } catch (error) {
-            window.alert("Export MP3 indisponible sur ce navigateur.");
+            console.error("MP3 export failed:", error);
+            const message =
+                error instanceof Error ? error.message : "Erreur inconnue";
+            window.alert(`Export MP3 indisponible (${message}).`);
         } finally {
-            setIsExporting(false);
+            setExportKind("none");
         }
-    }, [exportSettings]);
+    }, [exportSettings, isExporting]);
 
     return {
         isPlaying,
         playStartedAt,
         isExporting,
+        isExportingWav,
+        isExportingMp3,
         start,
         stop,
         downloadWav,

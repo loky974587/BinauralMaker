@@ -4,17 +4,23 @@ import {formatTime} from "../../utils/time";
 export class StickyActionBarModel {
     readonly isPlaying: boolean;
     readonly isExporting: boolean;
+    readonly isExportingWav: boolean;
+    readonly isExportingMp3: boolean;
     readonly elapsedSeconds: number;
     readonly hasDurationMismatch: boolean;
 
     constructor(params: {
         isPlaying: boolean;
         isExporting: boolean;
+        isExportingWav: boolean;
+        isExportingMp3: boolean;
         elapsedSeconds: number;
         hasDurationMismatch: boolean;
     }) {
         this.isPlaying = params.isPlaying;
         this.isExporting = params.isExporting;
+        this.isExportingWav = params.isExportingWav;
+        this.isExportingMp3 = params.isExportingMp3;
         this.elapsedSeconds = params.elapsedSeconds;
         this.hasDurationMismatch = params.hasDurationMismatch;
     }
@@ -35,8 +41,14 @@ export function StickyActionBar({
                                     onDownload,
                                     onDownloadMp3,
                                 }: StickyActionBarProps) {
-    const {isPlaying, isExporting, elapsedSeconds, hasDurationMismatch} =
-        stickyActionBarModel;
+    const {
+        isPlaying,
+        isExporting,
+        isExportingWav,
+        isExportingMp3,
+        elapsedSeconds,
+        hasDurationMismatch,
+    } = stickyActionBarModel;
     return (
         <div
             className="sticky bottom-4 z-20 w-full self-stretch rounded-2xl border border-slate-800/90 bg-slate-950/90 p-4 shadow-2xl shadow-slate-950/40 backdrop-blur">
@@ -77,7 +89,7 @@ export function StickyActionBar({
                             label="Export WAV"
                             onClick={onDownload}
                             disabled={isExporting}
-                            loading={isExporting}
+                            loading={isExportingWav}
                             severity="info"
                         />
                         <Button
@@ -85,7 +97,7 @@ export function StickyActionBar({
                             label="Export MP3"
                             onClick={onDownloadMp3}
                             disabled={isExporting}
-                            loading={isExporting}
+                            loading={isExportingMp3}
                             severity="help"
                         />
                     </div>

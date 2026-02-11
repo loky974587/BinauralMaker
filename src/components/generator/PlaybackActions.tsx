@@ -3,15 +3,21 @@ import {Button} from "primereact/button";
 export class PlaybackActionsModel {
     readonly isPlaying: boolean;
     readonly isExporting: boolean;
+    readonly isExportingWav: boolean;
+    readonly isExportingMp3: boolean;
     readonly hasDurationMismatch: boolean;
 
     constructor(params: {
         isPlaying: boolean;
         isExporting: boolean;
+        isExportingWav: boolean;
+        isExportingMp3: boolean;
         hasDurationMismatch: boolean;
     }) {
         this.isPlaying = params.isPlaying;
         this.isExporting = params.isExporting;
+        this.isExportingWav = params.isExportingWav;
+        this.isExportingMp3 = params.isExportingMp3;
         this.hasDurationMismatch = params.hasDurationMismatch;
     }
 }
@@ -31,7 +37,13 @@ export function PlaybackActions({
                                     onDownload,
                                     onDownloadMp3,
                                 }: PlaybackActionsProps) {
-    const {isPlaying, isExporting, hasDurationMismatch} = playbackActionsModel;
+    const {
+        isPlaying,
+        isExporting,
+        isExportingWav,
+        isExportingMp3,
+        hasDurationMismatch,
+    } = playbackActionsModel;
     return (
         <>
             <div className="flex flex-wrap gap-3">
@@ -54,19 +66,19 @@ export function PlaybackActions({
             <Button
                 className="w-full md:w-auto"
                 icon="pi pi-download"
-                label={isExporting ? "Export en cours..." : "Télécharger en WAV"}
+                label={isExportingWav ? "Export en cours..." : "Télécharger en WAV"}
                 onClick={onDownload}
                 disabled={isExporting}
-                loading={isExporting}
+                loading={isExportingWav}
                 severity="info"
             />
             <Button
                 className="w-full md:w-auto"
                 icon="pi pi-download"
-                label={isExporting ? "Export en cours..." : "Télécharger en MP3"}
+                label={isExportingMp3 ? "Export en cours..." : "Télécharger en MP3"}
                 onClick={onDownloadMp3}
                 disabled={isExporting}
-                loading={isExporting}
+                loading={isExportingMp3}
                 severity="help"
             />
             {hasDurationMismatch ? (

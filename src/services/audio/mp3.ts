@@ -1,5 +1,46 @@
-import {Mp3Encoder} from "lamejs";
+import lameUrl from "lamejs/lame.min.js?url";
 import {sanitizeNotes} from "../../utils/notes";
+
+type LameGlobal = {
+    lamejs?: {
+        Mp3Encoder: new (
+            channels: number,
+            sampleRate: number,
+            kbps: number,
+        ) => {
+            encodeBuffer: (left: Int16Array, right: Int16Array) => Uint8Array;
+            flush: () => Uint8Array;
+        };
+    };
+};
+
+let lameLoadPromise: Promise<LameGlobal["lamejs"]> | null = null;
+
+const loadLame = () => {
+    const globalScope = globalThis as LameGlobal;
+    if (globalScope.lamejs?.Mp3Encoder) {
+        return Promise.resolve(globalScope.lamejs);
+    }
+    if (!lameLoadPromise) {
+        lameLoadPromise = new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = lameUrl;
+            script.async = true;
+            script.onload = () => {
+                if (globalScope.lamejs?.Mp3Encoder) {
+                    resolve(globalScope.lamejs);
+                } else {
+                    reject(new Error("Lamejs n'a pas été chargé correctement."));
+                }
+            };
+            script.onerror = () => {
+                reject(new Error("Impossible de charger Lamejs."));
+            };
+            document.head.appendChild(script);
+        });
+    }
+    return lameLoadPromise;
+};
 
 const textEncoder = new TextEncoder();
 
@@ -55,12 +96,17 @@ const buildId3Tag = (notes?: string) => {
     return concatUint8Arrays([tagHeader, frames]);
 };
 
-export const encodeMp3 = (
+export const encodeMp3 = async (
     left: Float32Array,
     right: Float32Array,
     sampleRate: number,
     notes?: string,
 ) => {
+    const lame = await loadLame();
+    if (!lame?.Mp3Encoder) {
+        throw new Error("Lamejs indisponible.");
+    }
+    const {Mp3Encoder} = lame;
     const encoder = new Mp3Encoder(2, sampleRate, 128);
     const blockSize = 1152;
     const mp3Data: Uint8Array[] = [];
