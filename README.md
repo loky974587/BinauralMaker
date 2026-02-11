@@ -33,6 +33,17 @@ npm run build
 firebase deploy --only hosting
 ```
 
+## Déploiement automatique via GitHub Actions
+
+Un workflow est inclus dans `.github/workflows/deploy-firebase.yml` et déploie automatiquement sur Firebase Hosting à chaque merge/push sur `main`.
+
+Secrets GitHub à configurer dans le repository :
+
+- `FIREBASE_SERVICE_ACCOUNT`: JSON du compte de service Firebase (clé privée).
+- `FIREBASE_PROJECT_ID`: ID du projet Firebase cible.
+
+Le workflow peut aussi être lancé manuellement via l'onglet **Actions** (`workflow_dispatch`).
+
 ## Fonctionnalités
 
 - Réglage de la fréquence de base.
