@@ -42,8 +42,6 @@ const loadLame = () => {
     return lameLoadPromise;
 };
 
-const textEncoder = new TextEncoder();
-
 const concatUint8Arrays = (chunks: Uint8Array[]) => {
     const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
     const result = new Uint8Array(totalLength);
@@ -60,15 +58,24 @@ const buildId3Tag = (notes?: string) => {
     if (!comment) {
         return null;
     }
+    const commentBytes = new Uint8Array(2 + comment.length * 2);
+    commentBytes[0] = 0xff;
+    commentBytes[1] = 0xfe;
+    for (let index = 0; index < comment.length; index += 1) {
+        const codeUnit = comment.charCodeAt(index);
+        const offset = 2 + index * 2;
+        commentBytes[offset] = codeUnit & 0xff;
+        commentBytes[offset + 1] = (codeUnit >> 8) & 0xff;
+    }
 
-    const commentBytes = textEncoder.encode(comment);
-    const frameBody = new Uint8Array(1 + 3 + 1 + commentBytes.length);
-    frameBody[0] = 0x03;
+    const frameBody = new Uint8Array(1 + 3 + 2 + commentBytes.length);
+    frameBody[0] = 0x01;
     frameBody[1] = 0x65;
     frameBody[2] = 0x6e;
     frameBody[3] = 0x67;
     frameBody[4] = 0x00;
-    frameBody.set(commentBytes, 5);
+    frameBody[5] = 0x00;
+    frameBody.set(commentBytes, 6);
 
     const frameHeader = new Uint8Array(10);
     frameHeader[0] = 0x43;
