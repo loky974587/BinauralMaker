@@ -44,6 +44,8 @@ function App() {
         isPlaying,
         playStartedAt,
         isExporting,
+        isExportingWav,
+        isExportingMp3,
         start,
         stop,
         downloadWav,
@@ -160,10 +162,19 @@ function App() {
             new StickyActionBarModel({
                 isPlaying,
                 isExporting,
+                isExportingWav,
+                isExportingMp3,
                 elapsedSeconds,
                 hasDurationMismatch,
             }),
-        [isPlaying, isExporting, elapsedSeconds, hasDurationMismatch],
+        [
+            isPlaying,
+            isExporting,
+            isExportingWav,
+            isExportingMp3,
+            elapsedSeconds,
+            hasDurationMismatch,
+        ],
     );
 
     const floatingBar = useMemo(
