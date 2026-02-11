@@ -1,7 +1,34 @@
 import {useEffect, useRef} from "react";
-import {drawWaveformCanvas, getNthTroughX} from "./canvas";
+import {drawWaveformCanvas, getNthPeakX} from "./canvas";
 
 const durationSeconds = 0.03;
+const markerPadding = 14;
+
+const pickMarkerX = (
+    frequency: number,
+    previewTime: number,
+    canvasWidth: number,
+) => {
+    for (let peakIndex = 4; peakIndex >= 1; peakIndex -= 1) {
+        const x = getNthPeakX(
+            frequency,
+            previewTime,
+            peakIndex,
+            durationSeconds,
+            canvasWidth,
+        );
+        if (x <= canvasWidth - markerPadding) {
+            return x;
+        }
+    }
+    return getNthPeakX(
+        frequency,
+        previewTime,
+        1,
+        durationSeconds,
+        canvasWidth,
+    );
+};
 
 export class WaveformPanelModel {
     readonly leftFrequency: number;
@@ -32,18 +59,14 @@ export function WaveformPanel({
 
     useEffect(() => {
         const canvasWidth = waveformLeftCanvasRef.current?.width ?? 520;
-        const leftMarkerX = getNthTroughX(
+        const leftMarkerX = pickMarkerX(
             leftFrequency,
             previewTime,
-            4,
-            durationSeconds,
             canvasWidth,
         );
-        const rightMarkerX = getNthTroughX(
+        const rightMarkerX = pickMarkerX(
             rightFrequency,
             previewTime,
-            4,
-            durationSeconds,
             canvasWidth,
         );
 

@@ -2,6 +2,7 @@ import {InputNumber, InputNumberValueChangeEvent,} from "primereact/inputnumber"
 import {Slider, SliderChangeEvent} from "primereact/slider";
 import {FREQUENCY_RANGES} from "../../constants/ranges";
 import {clamp} from "../../utils/math";
+import {InfoHint} from "./InfoHint";
 
 type FrequencyControlsProps = {
     baseFrequency: number;
@@ -48,20 +49,34 @@ export function FrequencyControls({
         <div className="flex flex-col gap-8">
             <div className="stack-row-lg">
                 <div className="field-col flex-1">
-                    <label
-                        className="text-label-strong"
-                        htmlFor="base-frequency-input"
-                        id="base-frequency-label"
-                    >
-                        Fréquence de base
-                    </label>
-                    <p className="text-muted" id="base-frequency-help">
-                        Repères visuels pour choisir une hauteur confortable.
-                    </p>
-                    <p className="text-hint">
-                        Pourquoi: la base colore la sensation générale (plus grave = plus
-                        enveloppant).
-                    </p>
+                    <div className="flex items-center gap-2">
+                        <label
+                            className="text-label-strong"
+                            htmlFor="base-frequency-input"
+                            id="base-frequency-label"
+                        >
+                            Fréquence de base
+                        </label>
+                        <InfoHint
+                            label="Informations sur la fréquence de base"
+                            content={(
+                                <div className="space-y-1">
+                                    <p>
+                                        C’est la hauteur principale du son. Plus elle est basse,
+                                        plus la sensation est ronde et enveloppante.
+                                    </p>
+                                    <p>
+                                        Utilisez le curseur pour une ambiance douce (grave) ou plus
+                                        claire (aigu).
+                                    </p>
+                                </div>
+                            )}
+                        />
+                    </div>
+                    <span className="sr-only" id="base-frequency-help">
+                        Repères visuels pour choisir une hauteur confortable. Pourquoi: la base
+                        colore la sensation générale (plus grave = plus enveloppant).
+                    </span>
                     <div className="row-gap-2">
                         <InputNumber
                             inputId="base-frequency-input"
@@ -110,19 +125,34 @@ export function FrequencyControls({
 
             <div className="stack-row-lg">
                 <div className="field-col flex-1">
-                    <label
-                        className="text-label-strong"
-                        htmlFor="beat-frequency-input"
-                        id="beat-frequency-label"
-                    >
-                        Fréquence de battement
-                    </label>
-                    <p className="text-muted" id="beat-frequency-help">
-                        Repères visuels pour ajuster sans brider.
-                    </p>
-                    <p className="text-hint">
-                        Pourquoi: plus bas = détente, plus haut = éveil perçu.
-                    </p>
+                    <div className="flex items-center gap-2">
+                        <label
+                            className="text-label-strong"
+                            htmlFor="beat-frequency-input"
+                            id="beat-frequency-label"
+                        >
+                            Fréquence de battement
+                        </label>
+                        <InfoHint
+                            label="Informations sur la fréquence de battement"
+                            content={(
+                                <div className="space-y-1">
+                                    <p>
+                                        C’est l’écart entre les deux oreilles: il crée le rythme
+                                        perçu du battement binaural.
+                                    </p>
+                                    <p>
+                                        Bas = détente, moyen = focus calme, haut = sensation
+                                        d’éveil.
+                                    </p>
+                                </div>
+                            )}
+                        />
+                    </div>
+                    <span className="sr-only" id="beat-frequency-help">
+                        Repères visuels pour ajuster sans brider. Pourquoi: plus bas = détente,
+                        plus haut = éveil perçu.
+                    </span>
                     <div className="row-gap-2">
                         <InputNumber
                             inputId="beat-frequency-input"

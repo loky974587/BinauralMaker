@@ -6,6 +6,7 @@ import {SessionsSettings} from "../../types/audio";
 import {DURATION_RANGE, SESSION_RANGE} from "../../constants/ranges";
 import {clamp} from "../../utils/math";
 import {formatTime} from "../../utils/time";
+import {InfoHint} from "./InfoHint";
 
 export class SessionControlsModel {
     readonly duration: number;
@@ -137,13 +138,27 @@ export function SessionControls({
     return (
         <>
             <div className="field-col mt-2">
-                <label
-                    className="text-label-strong"
-                    htmlFor="file-duration-input"
-                    id="file-duration-label"
-                >
-                    Durée du fichier (secondes)
-                </label>
+                <div className="flex items-center gap-2">
+                    <label
+                        className="text-label-strong"
+                        htmlFor="file-duration-input"
+                        id="file-duration-label"
+                    >
+                        Durée du fichier (secondes)
+                    </label>
+                    <InfoHint
+                        label="Informations sur la durée du fichier"
+                        content={(
+                            <p>
+                                Définit la durée totale exportée. Utile pour caler une séance de
+                                durée précise.
+                            </p>
+                        )}
+                    />
+                </div>
+                <span className="sr-only" id="file-duration-help">
+                    La durée du fichier définit la longueur d&apos;export.
+                </span>
                 <InputNumber
                     inputId="file-duration-input"
                     value={duration}
@@ -159,10 +174,7 @@ export function SessionControls({
                     aria-describedby="file-duration-help"
                 />
                 {session.enabled ? (
-                    <div
-                        className="flex flex-wrap items-center gap-2 text-muted"
-                        id="file-duration-help"
-                    >
+                    <div className="flex flex-wrap items-center gap-2 text-muted">
             <span>
               Durée de la séance: {sessionTotalMinutes.toFixed(1)} min (
                 {Math.round(sessionTotalDuration)} s)
@@ -177,22 +189,30 @@ export function SessionControls({
                             <span className="text-amber-300">Durées différentes</span>
                         ) : null}
                     </div>
-                ) : (
-                    <p className="text-hint" id="file-duration-help">
-                        La durée du fichier définit la longueur d&apos;export.
-                    </p>
-                )}
+                ) : null}
             </div>
 
             <div className="panel-card">
                 <div className="flex items-center justify-between">
-                    <div>
+                    <div className="flex items-center gap-2">
                         <p className="text-label">
                             Séance guidée
                         </p>
-                        <p className="text-muted">
-                            Montée douce, plateau, sortie progressive
-                        </p>
+                        <InfoHint
+                            label="Informations sur la séance guidée"
+                            content={(
+                                <div className="space-y-1">
+                                    <p>
+                                        Structure en 3 phases: montée progressive, plateau
+                                        stable, puis retour en douceur.
+                                    </p>
+                                    <p>
+                                        Idéal pour créer une session cohérente sans changements
+                                        brusques.
+                                    </p>
+                                </div>
+                            )}
+                        />
                     </div>
                     <div className="row-gap-2">
                         <label
@@ -360,12 +380,7 @@ export function SessionControls({
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <p className="mt-3 text-hint">
-                        Activez la séance pour une montée douce, un plateau stable et une
-                        sortie progressive.
-                    </p>
-                )}
+                ) : null}
             </div>
         </>
     );

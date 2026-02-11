@@ -130,6 +130,35 @@ export const getNthTroughX = (
     return clamp(x, 0, canvasWidth);
 };
 
+export const getNthPeakX = (
+    frequency: number,
+    previewTime: number,
+    peakIndex: number,
+    durationSeconds: number,
+    canvasWidth: number,
+) => {
+    if (frequency <= 0) {
+        return 0;
+    }
+    const period = 1 / frequency;
+    const startPhase = 2 * Math.PI * frequency * previewTime;
+    const peakPhase = Math.PI / 2;
+    const cyclesUntilPeak = Math.ceil(
+        (startPhase - peakPhase) / (2 * Math.PI),
+    );
+    const firstPeakTime =
+        (peakPhase + cyclesUntilPeak * 2 * Math.PI) / (2 * Math.PI * frequency);
+    const targetTime = firstPeakTime + (peakIndex - 1) * period;
+    const clampedTime = clamp(
+        targetTime,
+        previewTime,
+        previewTime + durationSeconds,
+    );
+    const relativeTime = clampedTime - previewTime;
+    const x = (relativeTime / durationSeconds) * canvasWidth;
+    return clamp(x, 0, canvasWidth);
+};
+
 export const drawNoiseCanvas = (
     canvas: HTMLCanvasElement | null,
     values: Float32Array,

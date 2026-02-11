@@ -1,5 +1,6 @@
 import {InputTextarea} from "primereact/inputtextarea";
 import {maxNotesLength} from "../../utils/notes";
+import {InfoHint} from "./InfoHint";
 
 type NotesFieldProps = {
     notes: string;
@@ -12,13 +13,27 @@ export function NotesField({
                            }: NotesFieldProps) {
     return (
         <div className="field-col">
-            <label
-                className="text-label-strong"
-                htmlFor="notes-input"
-                id="notes-label"
-            >
-                Notes (optionnel)
-            </label>
+            <div className="flex items-center gap-2">
+                <label
+                    className="text-label-strong"
+                    htmlFor="notes-input"
+                    id="notes-label"
+                >
+                    Notes (optionnel)
+                </label>
+                <InfoHint
+                    label="Informations sur les notes"
+                    content={(
+                        <p>
+                            Sert de mémo: contexte, intention, réglages. Les notes sont stockées
+                            dans les métadonnées de l’export.
+                        </p>
+                    )}
+                />
+            </div>
+            <span className="sr-only" id="notes-help">
+                Ajoutées dans les métadonnées du fichier exporté.
+            </span>
             <InputTextarea
                 id="notes-input"
                 value={notes}
@@ -29,11 +44,10 @@ export function NotesField({
                 placeholder="Ajoutez un contexte ou une intention pour retrouver ce fichier plus tard."
                 aria-describedby="notes-help"
             />
-            <div className="flex items-center justify-between text-hint" id="notes-help">
-                <span>Ajoutées dans les métadonnées du fichier exporté.</span>
+            <div className="flex items-center justify-end text-hint">
                 <span>
-          {notes.length}/{maxNotesLength}
-        </span>
+                    {notes.length}/{maxNotesLength}
+                </span>
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 import {Slider, SliderChangeEvent} from "primereact/slider";
 import {VOLUME_RANGE} from "../../constants/ranges";
 import {clamp} from "../../utils/math";
+import {InfoHint} from "./InfoHint";
 
 type VolumeControlsProps = {
     volume: number;
@@ -20,18 +21,29 @@ export function VolumeControls({
 
     return (
         <>
-            <div className="stack-row-lg">
+            <div className="stack-row-lg mt-6">
                 <div className="field-col flex-1">
-                    <label
-                        className="text-label-strong"
-                        htmlFor="volume-slider"
-                        id="volume-label"
-                    >
-                        Volume global
-                    </label>
-                    <p className="text-hint" id="volume-help">
+                    <div className="flex items-center gap-2">
+                        <label
+                            className="text-label-strong"
+                            htmlFor="volume-slider"
+                            id="volume-label"
+                        >
+                            Volume global
+                        </label>
+                        <InfoHint
+                            label="Informations sur le volume global"
+                            content={(
+                                <p>
+                                    Ajuste le niveau général. Gardez-le bas et montez
+                                    progressivement pour rester confortable.
+                                </p>
+                            )}
+                        />
+                    </div>
+                    <span className="sr-only" id="volume-help">
                         Pourquoi: stabilise la perception sans masquer le battement.
-                    </p>
+                    </span>
                     <label htmlFor="volume-slider" className="sr-only">
                         Ajuster le volume global (curseur)
                     </label>
