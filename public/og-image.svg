@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Binaural Maker">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1020" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#22c55e" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <g transform="translate(110 100)">
+    <circle cx="210" cy="210" r="180" fill="none" stroke="#0b1224" stroke-width="18" />
+    <path
+      d="M210 50
+         C120 50 50 120 50 210
+         C50 300 120 360 210 360
+         C290 360 360 300 360 240
+         C360 170 300 120 230 120
+         C170 120 130 170 130 220
+         C130 270 170 300 220 300
+         C270 300 300 270 300 240"
+      fill="none"
+      stroke="url(#accent)"
+      stroke-width="20"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M40 210
+         C90 180 150 165 210 165
+         C270 165 330 180 380 210"
+      fill="none"
+      stroke="#38bdf8"
+      stroke-width="10"
+      stroke-linecap="round"
+      opacity="0.75"
+    />
+    <path
+      d="M40 260
+         C90 230 150 215 210 215
+         C270 215 330 230 380 260"
+      fill="none"
+      stroke="#22c55e"
+      stroke-width="10"
+      stroke-linecap="round"
+      opacity="0.75"
+    />
+  </g>
+  <g fill="#e2e8f0" font-family="'Segoe UI', Arial, sans-serif" font-weight="700">
+    <text x="560" y="250" font-size="64">Binaural Maker</text>
+  </g>
+  <g fill="#94a3b8" font-family="'Segoe UI', Arial, sans-serif" font-weight="400">
+    <text x="560" y="320" font-size="28">Génère des battements binauraux dans le navigateur</text>
+  </g>
+</svg>
